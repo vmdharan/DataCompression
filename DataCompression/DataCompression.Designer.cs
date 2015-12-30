@@ -34,6 +34,13 @@
             this.selectBtn = new System.Windows.Forms.Button();
             this.labelFS = new System.Windows.Forms.Label();
             this.labelFSbytes = new System.Windows.Forms.Label();
+            this.rbEncode = new System.Windows.Forms.RadioButton();
+            this.rbDecode = new System.Windows.Forms.RadioButton();
+            this.button1 = new System.Windows.Forms.Button();
+            this.gbFunction = new System.Windows.Forms.GroupBox();
+            this.cbAlgorithm = new System.Windows.Forms.ComboBox();
+            this.labelAlgorithm = new System.Windows.Forms.Label();
+            this.gbFunction.SuspendLayout();
             this.SuspendLayout();
             // 
             // inputTB
@@ -81,11 +88,77 @@
             this.labelFSbytes.TabIndex = 4;
             this.labelFSbytes.Text = "0";
             // 
+            // rbEncode
+            // 
+            this.rbEncode.AutoSize = true;
+            this.rbEncode.Location = new System.Drawing.Point(6, 26);
+            this.rbEncode.Name = "rbEncode";
+            this.rbEncode.Size = new System.Drawing.Size(62, 17);
+            this.rbEncode.TabIndex = 5;
+            this.rbEncode.TabStop = true;
+            this.rbEncode.Text = "Encode";
+            this.rbEncode.UseVisualStyleBackColor = true;
+            // 
+            // rbDecode
+            // 
+            this.rbDecode.AutoSize = true;
+            this.rbDecode.Location = new System.Drawing.Point(74, 26);
+            this.rbDecode.Name = "rbDecode";
+            this.rbDecode.Size = new System.Drawing.Size(63, 17);
+            this.rbDecode.TabIndex = 6;
+            this.rbDecode.TabStop = true;
+            this.rbDecode.Text = "Decode";
+            this.rbDecode.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(35, 50);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "Run";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // gbFunction
+            // 
+            this.gbFunction.Controls.Add(this.button1);
+            this.gbFunction.Controls.Add(this.rbEncode);
+            this.gbFunction.Controls.Add(this.rbDecode);
+            this.gbFunction.Location = new System.Drawing.Point(276, 105);
+            this.gbFunction.Name = "gbFunction";
+            this.gbFunction.Size = new System.Drawing.Size(149, 79);
+            this.gbFunction.TabIndex = 8;
+            this.gbFunction.TabStop = false;
+            this.gbFunction.Text = "Function";
+            // 
+            // cbAlgorithm
+            // 
+            this.cbAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAlgorithm.FormattingEnabled = true;
+            this.cbAlgorithm.Items.AddRange(new object[] {
+            "Huffman"});
+            this.cbAlgorithm.Location = new System.Drawing.Point(15, 131);
+            this.cbAlgorithm.Name = "cbAlgorithm";
+            this.cbAlgorithm.Size = new System.Drawing.Size(144, 21);
+            this.cbAlgorithm.TabIndex = 9;
+            // 
+            // labelAlgorithm
+            // 
+            this.labelAlgorithm.AutoSize = true;
+            this.labelAlgorithm.Location = new System.Drawing.Point(15, 112);
+            this.labelAlgorithm.Name = "labelAlgorithm";
+            this.labelAlgorithm.Size = new System.Drawing.Size(50, 13);
+            this.labelAlgorithm.TabIndex = 10;
+            this.labelAlgorithm.Text = "Algorithm";
+            // 
             // DataCompression
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(437, 196);
+            this.Controls.Add(this.labelAlgorithm);
+            this.Controls.Add(this.cbAlgorithm);
+            this.Controls.Add(this.gbFunction);
             this.Controls.Add(this.labelFSbytes);
             this.Controls.Add(this.labelFS);
             this.Controls.Add(this.selectBtn);
@@ -97,6 +170,8 @@
             this.Name = "DataCompression";
             this.Text = "Data Compression Utility";
             this.Load += new System.EventHandler(this.DataCompression_Load);
+            this.gbFunction.ResumeLayout(false);
+            this.gbFunction.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -110,6 +185,12 @@
         private System.Windows.Forms.Button selectBtn;
         private System.Windows.Forms.Label labelFS;
         private System.Windows.Forms.Label labelFSbytes;
+        private System.Windows.Forms.RadioButton rbEncode;
+        private System.Windows.Forms.RadioButton rbDecode;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.GroupBox gbFunction;
+        private System.Windows.Forms.ComboBox cbAlgorithm;
+        private System.Windows.Forms.Label labelAlgorithm;
     }
 }
 
