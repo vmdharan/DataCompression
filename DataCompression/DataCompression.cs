@@ -14,6 +14,7 @@ namespace DataCompression
     public partial class DataCompression : Form
     {
         private byte[] inputData;
+        private Huffman huffman;
 
         public DataCompression()
         {
@@ -34,34 +35,39 @@ namespace DataCompression
             {
                 try
                 {
-                    // Attempt to open the selected file.
-                    if((stream1 = openInputFile.OpenFile()) != null)
-                    {
-                        // Set the text in the text box to the file path.
-                        inputTB.Text = openInputFile.FileName;
+                    // Set the text in the text box to the file path.
+                    inputTB.Text = openInputFile.FileName;
 
-                        using (stream1)
-                        {
-                            // Show the length of the input data.
-                            labelFSbytes.Text = stream1.Length.ToString();
+                    // Read data from the file into the buffer.
+                    inputData = File.ReadAllBytes(inputTB.Text);
 
-                            // Initialise the byte buffer.
-                            inputData = new byte[stream1.Length];
-
-                            // Read data from the file into the buffer.
-                            stream1.ReadAsync(inputData, 0, (int)stream1.Length);
-                        }
-
-                        //using (Stream outfile = File.OpenWrite(inputTB.Text + ".out"))
-                        //{
-                        //    outfile.Write(inputData, 0, inputData.Length);
-                        //}
-                    }
+                    // Get the file size
+                    labelFSbytes.Text = inputData.Length.ToString(); 
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show("Unable to read file from disk. Error details: " + ex.Message);
                 }
+            }
+        }
+
+        private void runBtn_Click(object sender, EventArgs e)
+        {
+            if(rbEncode.Checked == true)
+            {
+                // Encode
+                huffman = new Huffman(inputData);
+            }
+            else if(rbDecode.Checked == true)
+            {
+                // Decode
+                File.WriteAllBytes(inputTB.Text + ".out", inputData);
+
+                // Test
+                //using (Stream outfile = File.OpenWrite(inputTB.Text + ".out"))
+                //{
+                //    outfile.WriteAsync(inputData, 0, (int)inputData.Length);
+                //}
             }
         }
     }

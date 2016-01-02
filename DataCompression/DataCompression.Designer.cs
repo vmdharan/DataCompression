@@ -36,7 +36,7 @@
             this.labelFSbytes = new System.Windows.Forms.Label();
             this.rbEncode = new System.Windows.Forms.RadioButton();
             this.rbDecode = new System.Windows.Forms.RadioButton();
-            this.button1 = new System.Windows.Forms.Button();
+            this.runBtn = new System.Windows.Forms.Button();
             this.gbFunction = new System.Windows.Forms.GroupBox();
             this.cbAlgorithm = new System.Windows.Forms.ComboBox();
             this.labelAlgorithm = new System.Windows.Forms.Label();
@@ -110,18 +110,19 @@
             this.rbDecode.Text = "Decode";
             this.rbDecode.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // runBtn
             // 
-            this.button1.Location = new System.Drawing.Point(35, 50);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Run";
-            this.button1.UseVisualStyleBackColor = true;
+            this.runBtn.Location = new System.Drawing.Point(35, 50);
+            this.runBtn.Name = "runBtn";
+            this.runBtn.Size = new System.Drawing.Size(75, 23);
+            this.runBtn.TabIndex = 8;
+            this.runBtn.Text = "Run";
+            this.runBtn.UseVisualStyleBackColor = true;
+            this.runBtn.Click += new System.EventHandler(this.runBtn_Click);
             // 
             // gbFunction
             // 
-            this.gbFunction.Controls.Add(this.button1);
+            this.gbFunction.Controls.Add(this.runBtn);
             this.gbFunction.Controls.Add(this.rbEncode);
             this.gbFunction.Controls.Add(this.rbDecode);
             this.gbFunction.Location = new System.Drawing.Point(276, 105);
@@ -187,7 +188,7 @@
         private System.Windows.Forms.Label labelFSbytes;
         private System.Windows.Forms.RadioButton rbEncode;
         private System.Windows.Forms.RadioButton rbDecode;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button runBtn;
         private System.Windows.Forms.GroupBox gbFunction;
         private System.Windows.Forms.ComboBox cbAlgorithm;
         private System.Windows.Forms.Label labelAlgorithm;
