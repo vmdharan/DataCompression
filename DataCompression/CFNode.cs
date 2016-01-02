@@ -18,7 +18,7 @@ namespace DataCompression
 
         public CFNode()
         {
-            key = '0';
+            key = '\0';
             frequency = 0;
             isLeaf = false;
             prev = null;
@@ -31,7 +31,7 @@ namespace DataCompression
         {
             key = c;
             frequency = f;
-            isLeaf = false;
+            isLeaf = true;
             prev = null;
             next = null;
             left_link = null;

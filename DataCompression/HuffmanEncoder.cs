@@ -14,6 +14,11 @@ namespace DataCompression
         private CFNode huffmanTree;
         private int[] keyFrequencies;
 
+        private string KEY_NOT_FOUND = "x";
+        private string KEY_FOUND = "y";
+
+        private CFData[] header;
+
         // The number of unique (key, frequency) pairs.
         private int countCF;
 
@@ -37,9 +42,20 @@ namespace DataCompression
             // Run Insertion Sort on the list.
             insertionSort();
 
+            // Store the header.
+            storeHeader();
+
             // Print out the (key, frequency) pairs.
             printList();
 
+            // Generate the Huffman Tree.
+            generateHuffmanTree();
+
+            // Store the bit-strings.
+            storeBitStrings();
+
+            // Print out the bit-strings.
+            printBitStrings();
         }
 
         // Read the input data and store the frequency of occurence of
@@ -223,6 +239,227 @@ namespace DataCompression
                 File.AppendAllText("cf_pairs.out", (temp.key).ToString() + " - ");
                 File.AppendAllText("cf_pairs.out", (temp.frequency).ToString() + "\n");
                 temp = temp.next;
+            }
+        }
+
+        // De-couple the head node from the linked-list.
+        public CFNode decoupleHeadNode()
+        {
+            CFNode temp = new CFNode();
+            temp = charList.head;
+
+            if(temp.next != null)
+            {
+                (temp.next).prev = null;
+                charList.head = temp.next;
+            }
+            else
+            {
+                charList.head = charList.foot = null;
+            }
+
+            temp.next = temp.prev = null;
+
+            return temp;
+        }
+
+        // Generate the Huffman Tree.
+        public void generateHuffmanTree()
+        {
+            // Temporary nodes.
+            CFNode temp = new CFNode();
+            CFNode node1 = null;
+            CFNode node2 = null;
+
+            // Keep taking the first two nodes from the priority queue 
+            // and combining them to generate a new node with the frequencies 
+            // added.
+            temp = charList.head;
+            while(temp.next != null)
+            {
+                // De-couple the first two nodes.
+                node1 = decoupleHeadNode();
+                node2 = decoupleHeadNode();
+
+                // Insert into the Huffman Tree.
+                insertIntoTree(node1, node2);
+
+                // Sort the nodes in the priority queue.
+                insertionSort();
+
+                // Set the temp node to the list head.
+                temp = charList.head;
+            }
+
+            // Insert the last entry into the tree.
+            huffmanTree = temp;
+        }
+
+        // Insert two nodes in the Huffman Tree.
+        public void insertIntoTree(CFNode n1, CFNode n2)
+        {
+            // Temporary nodes.
+            CFNode temp = new CFNode();
+            CFNode node1 = n1;
+            CFNode node2 = n2;
+
+            // Check whether node1 is a leaf node.
+            if(node1.isLeaf == true)
+            {
+                node1.left_link = node1.right_link = null;
+            }
+
+            // Check whether node2 is a leaf node.
+            if(node2.isLeaf == true)
+            {
+                node2.left_link = node2.right_link = null;
+            }
+
+            // Define the new node.
+            temp.isLeaf = false;
+            temp.key = '\0';
+            temp.frequency = node1.frequency + node2.frequency;
+            temp.left_link = node1;
+            temp.right_link = node2;
+            temp.prev = null;
+            temp.next = null;
+
+            // Check if this is the only node left in the list.
+            if(charList.head == null)
+            {
+                charList.head = charList.foot = temp;
+            }
+            else
+            {
+                temp.next = charList.head;
+                (charList.head).prev = temp;
+                charList.head = temp;
+            }
+        }
+
+        // Traverse the Huffman Tree and obtain the bit-string 
+        // for a given character.
+        public string traverseHuffmanTree(CFNode rootNode, char k)
+        {
+            CFNode root = rootNode;
+            string retval;
+            retval = KEY_NOT_FOUND;
+
+            // The current node is null.
+            if(root == null)
+            {
+                return retval;
+            }
+
+            // This is a leaf node.
+            if(root.isLeaf == true)
+            {
+                // Check whether this is the character being searched for.
+                if(root.key == k)
+                {
+                    retval = KEY_FOUND;
+                    return retval;
+                }
+                // This is not the character we are searching for.
+                else
+                {
+                    return retval;
+                }
+            }
+
+            // This is an intermediate node.
+            else
+            {
+                string bitstring;
+
+                // Search left sub-tree.
+                if(root.left_link != null)
+                {
+                    retval = traverseHuffmanTree(root.left_link, k);
+
+                    if(String.Compare(retval.ToString(), KEY_NOT_FOUND) != 0)
+                    {
+                        if(String.Compare(retval.ToString(), KEY_FOUND) == 0)
+                        {
+                            bitstring = "0";
+                        }
+                        else
+                        {
+                            bitstring = "0" + retval;
+                        }
+
+                        return bitstring;
+                    }
+                }
+
+                // Search right sub-tree.
+                if (root.right_link != null)
+                {
+                    retval = traverseHuffmanTree(root.right_link, k);
+
+                    if (String.Compare(retval.ToString(), KEY_NOT_FOUND) != 0)
+                    {
+                        if (String.Compare(retval.ToString(), KEY_FOUND) == 0)
+                        {
+                            bitstring = "1";
+                        }
+                        else
+                        {
+                            bitstring = "1" + retval;
+                        }
+
+                        return bitstring;
+                    }
+                }
+            }
+
+            return retval;
+        }
+
+        // Record the header information for encoding the file.
+        public void storeHeader()
+        {
+            int i = 0;
+
+            CFNode temp = charList.head;
+            header = new CFData[countCF];
+
+            while(temp != null)
+            {
+                header[i] = new CFData();
+                header[i].key = temp.key;
+                header[i].frequency = temp.frequency;
+                i++;
+
+                temp = temp.next;
+            }
+        }
+
+        // Traverse the Huffman Tree and store the bit-strings for 
+        // each character.
+        public void storeBitStrings()
+        {
+            int i;
+            string bitstring;
+
+            for(i = 0; i < header.Length; i++)
+            {
+                bitstring = traverseHuffmanTree(huffmanTree, header[i].key);
+                header[i].bitstring = bitstring;
+            }
+        }
+
+        // Print out the bit-strings for the (key, frequency) pairs.
+        public void printBitStrings()
+        {
+            int i;
+
+            File.WriteAllText("cf_bitstrings.out", "");
+            for(i = 0; i < header.Length; i++)
+            {
+                File.AppendAllText("cf_bitstrings.out", (header[i].key).ToString() + " - ");
+                File.AppendAllText("cf_bitstrings.out", (header[i].frequency).ToString() + " - ");
+                File.AppendAllText("cf_bitstrings.out", (header[i].bitstring + "\n"));
             }
         }
     }

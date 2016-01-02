@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CFData.cs" />
     <Compile Include="CFList.cs" />
     <Compile Include="CFNode.cs" />
     <Compile Include="DataCompression.cs">
