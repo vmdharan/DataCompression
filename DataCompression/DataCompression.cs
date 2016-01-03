@@ -28,8 +28,6 @@ namespace DataCompression
 
         private void selectBtn_Click(object sender, EventArgs e)
         {
-            Stream stream1 = null;
-
             // Show the open file dialog.
             if(openInputFile.ShowDialog() == DialogResult.OK)
             {
@@ -56,18 +54,12 @@ namespace DataCompression
             if(rbEncode.Checked == true)
             {
                 // Encode
-                huffman = new Huffman(inputData);
+                huffman = new Huffman(inputData, true);
             }
             else if(rbDecode.Checked == true)
             {
                 // Decode
-                File.WriteAllBytes(inputTB.Text + ".out", inputData);
-
-                // Test
-                //using (Stream outfile = File.OpenWrite(inputTB.Text + ".out"))
-                //{
-                //    outfile.WriteAsync(inputData, 0, (int)inputData.Length);
-                //}
+                huffman = new Huffman(inputData, false);
             }
         }
     }

@@ -11,9 +11,16 @@ namespace DataCompression
         private HuffmanEncoder encoder;
         private HuffmanDecoder decoder;
 
-        public Huffman(byte[] sourceData)
+        public Huffman(byte[] sourceData, bool isEncode)
         {
-            encoder = new HuffmanEncoder(sourceData);
+            if(isEncode == true)
+            {
+                encoder = new HuffmanEncoder(sourceData);
+            }
+            else
+            {
+                decoder = new HuffmanDecoder(sourceData);
+            }
         }
     }
 }

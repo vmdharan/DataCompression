@@ -22,6 +22,9 @@ namespace DataCompression
         // The number of unique (key, frequency) pairs.
         private int countCF;
 
+        private char[] bytebuffer;
+        private byte[] finalBytes;
+
         // Constructor
         public HuffmanEncoder(byte[] sourceData)
         {
@@ -32,6 +35,8 @@ namespace DataCompression
             huffmanTree = new CFNode();
 
             countCF = 0;
+            bytebuffer = new char[8];
+
             
             // Obtain (key, frequency) pairs for data set.
             storeKeyFrequencies();
@@ -56,6 +61,135 @@ namespace DataCompression
 
             // Print out the bit-strings.
             printBitStrings();
+
+            // Encode the source data.
+            encodeData();
+        }
+
+        // Encode the data.
+        public void encodeData()
+        {
+            int w = 0, x = 0, y = 0, z = 0;
+            int i, f;
+            char k;
+            byte outputByte = 0x00;
+            string bitstring;
+
+            //File.AppendAllText("outputfile.enc", "");
+
+            // Calculate header size.
+            int headerFileSize = (2 * 4) + (countCF * 5);
+
+            // Calculate output file size.
+            int outputFileSize = 0;
+            for (i = 0; i < header.Length; i++)
+            {
+                outputFileSize += (obtainBitString(header[i].key)).Length * (header[i].frequency);
+            }
+            // Align file size with the nearest byte.
+            if(outputFileSize % 8 != 0)
+            {
+                outputFileSize = outputFileSize / 8;
+                outputFileSize++;
+            }
+            else
+            {
+                outputFileSize = outputFileSize / 8;
+            }
+
+            File.AppendAllText("outputinfo.log", "header: " + headerFileSize.ToString() + "\n");
+            File.AppendAllText("outputinfo.log", "output: " + outputFileSize.ToString());
+
+            finalBytes = new byte[headerFileSize + outputFileSize];
+
+            // Write the file length to the file.
+            writeIntToBytes(data.Length, w);
+            w += 4;
+
+            // Write the length of the header to the file.
+            writeIntToBytes(headerFileSize, w);
+            w += 4;
+
+            // Write the characters and frequencies to file.
+            for (i = 0; i < header.Length; i++)
+            {
+                k = header[i].key;
+                f = header[i].frequency;
+
+                // Update the data to be written.
+                finalBytes[w] = (byte) k;
+                w++;
+                writeIntToBytes(f, w);
+                w += 4;
+            }
+
+            for (x = 0; x < data.Length; x++)
+            {
+                // Get the bit-string for the character.
+                bitstring = obtainBitString((char)data[x]);
+
+                for (y = 0; y < bitstring.Length; y++)
+                {
+                    bytebuffer[z] = bitstring[y];
+                    z++;
+
+                    // Byte buffer is full.
+                    if (z >= 8)
+                    {
+                        // Reset index.
+                        z = 0;
+
+                        // Convert character bit-stream to a byte representation.
+                        outputByte = convertToByte(bytebuffer);
+
+                        // Write the byte to file.
+                        //File.AppendAllText("outputfile.enc", outputByte.ToString());
+                        finalBytes[w] = outputByte;
+                        w++;
+
+                        // Clear the output byte
+                        outputByte = 0x00;
+                    }
+                }
+            }
+
+            // Pad the output byte with 0.
+            if (z != 0)
+            {
+                for (y = z; y < 8; y++)
+                {
+                    bytebuffer[y] = '0';
+                }
+
+                outputByte = convertToByte(bytebuffer);
+                //File.AppendAllText("outputfile.enc", outputByte.ToString());
+                finalBytes[w] = outputByte;
+                w++;
+                outputByte = 0x00;
+            }
+
+            File.WriteAllBytes("outputfile.enc", finalBytes);
+        }
+
+        // Write the integer number to the output byte array.
+        public void writeIntToBytes(int num, int w)
+        {
+            byte[] byteStream;
+            byte[] byteStreamF;
+
+            // Convert the integer to a byte array.
+            byteStream = BitConverter.GetBytes(num);
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(byteStream);
+            }
+            byteStreamF = byteStream;
+
+            // Update the data to be written.
+            finalBytes[w] = byteStreamF[0];
+            finalBytes[w + 1] = byteStreamF[1];
+            finalBytes[w + 2] = byteStreamF[2];
+            finalBytes[w + 3] = byteStreamF[3];
         }
 
         // Read the input data and store the frequency of occurence of
@@ -230,7 +364,6 @@ namespace DataCompression
         // Print out the (key, frequency) pairs in the list.
         public void printList()
         {
-            int i = 0;
             CFNode temp = charList.head;
 
             File.WriteAllText("cf_pairs.out", "");
@@ -461,6 +594,39 @@ namespace DataCompression
                 File.AppendAllText("cf_bitstrings.out", (header[i].frequency).ToString() + " - ");
                 File.AppendAllText("cf_bitstrings.out", (header[i].bitstring + "\n"));
             }
+        }
+
+        // Convert a bit-stringto a byte representation
+        public byte convertToByte(char[] bytebuffer)
+        {
+            int i;
+            int n = 0;
+
+            for(i = 0; i < 8; i++)
+            {
+                if(bytebuffer[i] == '1')
+                {
+                    n += (1 << (7 - i));
+                }
+            }
+
+            return (byte)n;
+        }
+
+        // Return the bit-string for a given character.
+        public string obtainBitString(char k)
+        {
+            int i;
+
+            for(i = 0; i < header.Length; i++)
+            {
+                if(header[i].key == k)
+                {
+                    return header[i].bitstring;
+                }
+            }
+
+            return "";
         }
     }
 }
