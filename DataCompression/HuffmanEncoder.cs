@@ -25,8 +25,10 @@ namespace DataCompression
         private char[] bytebuffer;
         private byte[] finalBytes;
 
+        private string fileName;
+
         // Constructor
-        public HuffmanEncoder(byte[] sourceData)
+        public HuffmanEncoder(byte[] sourceData, string fName)
         {
             data = sourceData;
             keyFrequencies = new int[256];
@@ -37,6 +39,7 @@ namespace DataCompression
             countCF = 0;
             bytebuffer = new char[8];
 
+            fileName = fName;
             
             // Obtain (key, frequency) pairs for data set.
             storeKeyFrequencies();
@@ -168,7 +171,7 @@ namespace DataCompression
                 outputByte = 0x00;
             }
 
-            File.WriteAllBytes("outputfile.enc", finalBytes);
+            File.WriteAllBytes(fileName + ".enc", finalBytes);
         }
 
         // Write the integer number to the output byte array.

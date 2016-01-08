@@ -30,10 +30,13 @@ namespace DataCompression
 
         private int w;
 
+        private string fileName;
+
+
         // Index for bitstring search
         int buffer_index;
 
-        public HuffmanDecoder(byte[] sourceData)
+        public HuffmanDecoder(byte[] sourceData, string fName)
         {
             char c = '\0';
             int f = 0;
@@ -49,6 +52,8 @@ namespace DataCompression
             bytebuffer = new char[8];
 
             byte[] intBytes = new byte[4];
+
+            fileName = fName;
 
             // Get the file length.
             fileLength = 0;
@@ -135,7 +140,7 @@ namespace DataCompression
                 finalBytes[x] = (byte) outputByte;
             }
 
-            File.WriteAllBytes("outputfile.dec", finalBytes);
+            File.WriteAllBytes(fileName +".dec", finalBytes);
         }
 
         // Convert byte array to Integer.

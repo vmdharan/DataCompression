@@ -54,12 +54,12 @@ namespace DataCompression
             if(rbEncode.Checked == true)
             {
                 // Encode
-                huffman = new Huffman(inputData, true);
+                huffman = new Huffman(inputData, inputTB.Text, true);
             }
             else if(rbDecode.Checked == true)
             {
                 // Decode
-                huffman = new Huffman(inputData, false);
+                huffman = new Huffman(inputData, inputTB.Text, false);
             }
         }
     }
