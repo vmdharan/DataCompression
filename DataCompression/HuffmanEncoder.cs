@@ -27,6 +27,7 @@ namespace DataCompression
         private byte[] finalBytes;
 
         private string fileName;
+        private string[] bitStrings;
 
         // Constructor
         public HuffmanEncoder(byte[] sourceData, string fName)
@@ -41,6 +42,7 @@ namespace DataCompression
             bytebuffer = new char[8];
 
             fileName = fName;
+            bitStrings = new string[256];
             
             // Obtain (key, frequency) pairs for data set.
             storeKeyFrequencies();
@@ -65,6 +67,9 @@ namespace DataCompression
 
             // Print out the bit-strings.
             printBitStrings();
+
+            // Prepare bit-strings array.
+            prepareBitStrings();
 
             // Encode the source data.
             encodeData();
@@ -133,7 +138,8 @@ namespace DataCompression
             for (x = 0; x < data.Length; x++)
             {
                 // Get the bit-string for the character.
-                bitstring = obtainBitString((char)data[x]);
+                //bitstring = obtainBitString((char)data[x]);
+                bitstring = bitStrings[(char)data[x]];
 
                 for (y = 0; y < bitstring.Length; y++)
                 {
@@ -589,6 +595,17 @@ namespace DataCompression
             {
                 bitstring = traverseHuffmanTree(huffmanTree, header[i].key);
                 header[i].bitstring = bitstring;
+            }
+        }
+
+        // Store all the bit-strings in an easy to reference array.
+        public void prepareBitStrings()
+        {
+            int i;
+
+            for(i = 0; i < 256; i++)
+            {
+                bitStrings[i] = obtainBitString((char)i);
             }
         }
 
