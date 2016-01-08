@@ -116,9 +116,8 @@ namespace DataCompression
         public void decodeData()
         {
             int x = 0, y = 0, z = 0;
-            string bitstring;
             char[] bits8 = new char[8];
-            bytebuffer = new char[8 * fileLength];
+            bytebuffer = new char[8 * data.Length];
             char outputByte = 'x';
 
             for (x = w; x < data.Length; x++)

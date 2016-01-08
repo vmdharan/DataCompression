@@ -116,6 +116,7 @@ namespace DataCompression
 
             // Write the file length to the file.
             writeIntToBytes(data.Length, w);
+            //writeIntToBytes(outputFileSize, w);
             w += 4;
 
             // Write the length of the header to the file.
@@ -154,6 +155,15 @@ namespace DataCompression
 
                         // Convert character bit-stream to a byte representation.
                         outputByte = convertToByte(bytebuffer);
+                        /*outputByte = (byte)(((int)(bytebuffer[0] & '1') << 7)
+                            | ((int)(bytebuffer[1] & '1') << 6)
+                            | ((int)(bytebuffer[2] & '1') << 5)
+                            | ((int)(bytebuffer[3] & '1') << 4)
+                            | ((int)(bytebuffer[4] & '1') << 3)
+                            | ((int)(bytebuffer[5] & '1') << 2)
+                            | ((int)(bytebuffer[6] & '1') << 1)
+                            | ((int)(bytebuffer[7] & '1') ));*/
+
 
                         // Write the byte to file.
                         //File.AppendAllText("outputfile.enc", outputByte.ToString());
@@ -626,9 +636,11 @@ namespace DataCompression
         // Convert a bit-stringto a byte representation
         public byte convertToByte(char[] bytebuffer)
         {
-            //int i;
+            int i;
             int n = 0;
 
+
+            /*
             if(bytebuffer[0] == '1')
             {
                 n += 128;
@@ -661,15 +673,15 @@ namespace DataCompression
             {
                 n += 1;
             }
-
-            /*
+            */
+            
             for(i = 0; i < 8; i++)
             {
                 if(bytebuffer[i] == '1')
                 {
                     n += (1 << (7 - i));
                 }
-            }*/
+            }
 
             return (byte)n;
         }
