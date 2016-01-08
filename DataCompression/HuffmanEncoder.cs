@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -72,6 +73,9 @@ namespace DataCompression
         // Encode the data.
         public void encodeData()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             int w = 0, x = 0, y = 0, z = 0;
             int i, f;
             char k;
@@ -172,6 +176,9 @@ namespace DataCompression
             }
 
             File.WriteAllBytes(fileName + ".enc", finalBytes);
+
+            sw.Stop();
+            File.WriteAllText("encodingTime.log", sw.ElapsedMilliseconds.ToString());
         }
 
         // Write the integer number to the output byte array.
