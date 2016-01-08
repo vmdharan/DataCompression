@@ -609,16 +609,50 @@ namespace DataCompression
         // Convert a bit-stringto a byte representation
         public byte convertToByte(char[] bytebuffer)
         {
-            int i;
+            //int i;
             int n = 0;
 
+            if(bytebuffer[0] == '1')
+            {
+                n += 128;
+            }
+            if (bytebuffer[1] == '1')
+            {
+                n += 64;
+            }
+            if (bytebuffer[2] == '1')
+            {
+                n += 32;
+            }
+            if (bytebuffer[3] == '1')
+            {
+                n += 16;
+            }
+            if (bytebuffer[4] == '1')
+            {
+                n += 8;
+            }
+            if (bytebuffer[5] == '1')
+            {
+                n += 4;
+            }
+            if (bytebuffer[6] == '1')
+            {
+                n += 2;
+            }
+            if (bytebuffer[7] == '1')
+            {
+                n += 1;
+            }
+
+            /*
             for(i = 0; i < 8; i++)
             {
                 if(bytebuffer[i] == '1')
                 {
                     n += (1 << (7 - i));
                 }
-            }
+            }*/
 
             return (byte)n;
         }
