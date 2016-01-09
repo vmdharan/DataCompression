@@ -14,7 +14,6 @@ namespace DataCompression
     public partial class DataCompression : Form
     {
         private byte[] inputData;
-        private Huffman huffman;
 
         public DataCompression()
         {
@@ -51,15 +50,18 @@ namespace DataCompression
 
         private void runBtn_Click(object sender, EventArgs e)
         {
+            HuffmanEncoder encoder;
+            HuffmanDecoder decoder;
+
             if(rbEncode.Checked == true)
             {
                 // Encode
-                huffman = new Huffman(inputData, inputTB.Text, true);
+                encoder = new HuffmanEncoder(inputData, inputTB.Text);
             }
             else if(rbDecode.Checked == true)
             {
                 // Decode
-                huffman = new Huffman(inputData, inputTB.Text, false);
+                decoder = new HuffmanDecoder(inputData, inputTB.Text);
             }
         }
     }
