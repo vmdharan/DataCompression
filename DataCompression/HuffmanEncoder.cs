@@ -101,9 +101,8 @@ namespace DataCompression
                 for (y = 0; y < bitstring.Length; y++)
                 {
                     // Process the bits into a byte.
-                    //bitVal |= (bitstring[y] == '1' ? 1 : 0);
                     // Subtract 48 from char '1' or '0' to get the integer 1 or 0.
-                    bitVal |= ((int)bitstring[y] - 48);
+                    bitVal |= bitstring[y] - 48;
                     bitVal = bitVal << 1;
                     z++;
 

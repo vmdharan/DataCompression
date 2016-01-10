@@ -8,6 +8,9 @@ namespace DataCompression
         protected string KEY_NOT_FOUND = "x";
         protected string KEY_FOUND = "y";
 
+        protected string ZERO_STR = "0";
+        protected string ONE_STR = "1";
+
         protected byte[] data;
         protected CFList charList;
         protected CFNode huffmanTree;
@@ -363,11 +366,11 @@ namespace DataCompression
                     {
                         if (String.Compare(retval.ToString(), KEY_FOUND) == 0)
                         {
-                            bitstring = "0";
+                            bitstring = ZERO_STR;
                         }
                         else
                         {
-                            bitstring = "0" + retval;
+                            bitstring = ZERO_STR + retval;
                         }
 
                         return bitstring;
@@ -383,11 +386,11 @@ namespace DataCompression
                     {
                         if (String.Compare(retval.ToString(), KEY_FOUND) == 0)
                         {
-                            bitstring = "1";
+                            bitstring = ONE_STR;
                         }
                         else
                         {
-                            bitstring = "1" + retval;
+                            bitstring = ONE_STR + retval;
                         }
 
                         return bitstring;
