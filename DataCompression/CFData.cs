@@ -11,6 +11,6 @@
             key = '\0';
             frequency = 0;
             bitstring = "x";
-        } 
+        }
     }
 }

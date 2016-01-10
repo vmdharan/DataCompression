@@ -19,7 +19,7 @@ namespace DataCompression
 
             fileName = fName;
             bitStrings = new string[256];
-            
+
             // Obtain (key, frequency) pairs for data set.
             storeKeyFrequencies();
 
@@ -60,7 +60,7 @@ namespace DataCompression
             }
 
             // Align file size with the nearest byte.
-            if(outputFileSize % 8 != 0)
+            if (outputFileSize % 8 != 0)
             {
                 outputFileSize = outputFileSize / 8;
                 outputFileSize++;
@@ -87,8 +87,8 @@ namespace DataCompression
                 f = header[i].frequency;
 
                 // Update the data to be written.
-                finalBytes[w] = (byte) k;
-                writeIntToBytes(f, w+1);
+                finalBytes[w] = (byte)k;
+                writeIntToBytes(f, w + 1);
                 w += 5;
             }
 

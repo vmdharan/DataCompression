@@ -28,7 +28,7 @@ namespace DataCompression
         private void selectBtn_Click(object sender, EventArgs e)
         {
             // Show the open file dialog.
-            if(openInputFile.ShowDialog() == DialogResult.OK)
+            if (openInputFile.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
@@ -39,9 +39,9 @@ namespace DataCompression
                     inputData = File.ReadAllBytes(inputTB.Text);
 
                     // Get the file size
-                    labelFSbytes.Text = inputData.Length.ToString(); 
+                    labelFSbytes.Text = inputData.Length.ToString();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show("Unable to read file from disk. Error details: " + ex.Message);
                 }
@@ -53,12 +53,12 @@ namespace DataCompression
             HuffmanEncoder encoder;
             HuffmanDecoder decoder;
 
-            if(rbEncode.Checked == true)
+            if (rbEncode.Checked == true)
             {
                 // Encode
                 encoder = new HuffmanEncoder(inputData, inputTB.Text);
             }
-            else if(rbDecode.Checked == true)
+            else if (rbDecode.Checked == true)
             {
                 // Decode
                 decoder = new HuffmanDecoder(inputData, inputTB.Text);

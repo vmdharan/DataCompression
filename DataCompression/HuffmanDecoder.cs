@@ -45,11 +45,11 @@ namespace DataCompression
             w += 4;
             headerLength = convertBytesToInt(intBytes);
             countCF = (headerLength - 8) / 5;
-            
+
             // Identify character frequencies.
             for (int i = 0; i < countCF; i++)
             {
-                c = (char) data[w];
+                c = (char)data[w];
                 w++;
 
                 intBytes[0] = data[w];
@@ -91,10 +91,10 @@ namespace DataCompression
                 outputByte = traverseHuffmanTree2(huffmanTree, bytebuffer);
 
                 // Write outputByte into the buffer.
-                finalBytes[x] = (byte) outputByte;
+                finalBytes[x] = (byte)outputByte;
             }
 
-            File.WriteAllBytes(fileName +".dec", finalBytes);
+            File.WriteAllBytes(fileName + ".dec", finalBytes);
         }
     }
 }
