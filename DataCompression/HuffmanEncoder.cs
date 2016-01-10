@@ -46,10 +46,8 @@ namespace DataCompression
             int w = 0, x = 0, y = 0, z = 0;
             int i, f;
             char k;
-            byte outputByte = 0x00;
             string bitstring;
-
-            //File.AppendAllText("outputfile.enc", "");
+            int bitVal = 0;
 
             // Calculate header size.
             int headerFileSize = (2 * 4) + (countCF * 5);
@@ -60,6 +58,7 @@ namespace DataCompression
             {
                 outputFileSize += (obtainBitString(header[i].key)).Length * (header[i].frequency);
             }
+
             // Align file size with the nearest byte.
             if(outputFileSize % 8 != 0)
             {
@@ -71,14 +70,10 @@ namespace DataCompression
                 outputFileSize = outputFileSize / 8;
             }
 
-            File.AppendAllText("outputinfo.log", "header: " + headerFileSize.ToString() + "\n");
-            File.AppendAllText("outputinfo.log", "output: " + outputFileSize.ToString());
-
             finalBytes = new byte[headerFileSize + outputFileSize];
 
             // Write the file length to the file.
             writeIntToBytes(data.Length, w);
-            //writeIntToBytes(outputFileSize, w);
             w += 4;
 
             // Write the length of the header to the file.
@@ -93,55 +88,46 @@ namespace DataCompression
 
                 // Update the data to be written.
                 finalBytes[w] = (byte) k;
-                w++;
-                writeIntToBytes(f, w);
-                w += 4;
+                writeIntToBytes(f, w+1);
+                w += 5;
             }
 
+            // Process source data and output the bit-strings for each character.
             for (x = 0; x < data.Length; x++)
             {
                 // Get the bit-string for the character.
-                //bitstring = obtainBitString((char)data[x]);
                 bitstring = bitStrings[(char)data[x]];
 
                 for (y = 0; y < bitstring.Length; y++)
                 {
-                    bytebuffer[z] = bitstring[y];
+                    // Process the bits into a byte.
+                    //bitVal |= (bitstring[y] == '1' ? 1 : 0);
+                    // Subtract 48 from char '1' or '0' to get the integer 1 or 0.
+                    bitVal |= ((int)bitstring[y] - 48);
+                    bitVal = bitVal << 1;
                     z++;
 
-                    // Byte buffer is full.
-                    if (z >= 8)
+                    // Eight bits have been processed, enough to make a byte.
+                    if (z == 8)
                     {
                         // Reset index.
                         z = 0;
 
                         // Convert character bit-stream to a byte representation.
-                        outputByte = convertToByte(bytebuffer);
+                        bitVal = bitVal >> 1;
+                        finalBytes[w] = (byte)bitVal;
+                        bitVal = 0x00;
 
-                        // Write the byte to file.
-                        //File.AppendAllText("outputfile.enc", outputByte.ToString());
-                        finalBytes[w] = outputByte;
                         w++;
-
-                        // Clear the output byte
-                        outputByte = 0x00;
                     }
                 }
             }
 
-            // Pad the output byte with 0.
+            // Pad the with 0 and write the last byte.
             if (z != 0)
             {
-                for (y = z; y < 8; y++)
-                {
-                    bytebuffer[y] = '0';
-                }
-
-                outputByte = convertToByte(bytebuffer);
-                //File.AppendAllText("outputfile.enc", outputByte.ToString());
-                finalBytes[w] = outputByte;
-                w++;
-                outputByte = 0x00;
+                bitVal = bitVal << (7 - z);
+                finalBytes[w] = (byte)bitVal;
             }
 
             File.WriteAllBytes(fileName + ".enc", finalBytes);

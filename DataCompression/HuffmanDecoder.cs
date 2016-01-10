@@ -70,7 +70,7 @@ namespace DataCompression
 
         public void decodeData()
         {
-            int x = 0, y = 0, z = 0;
+            int x = 0, y = 0;
             char[] bits8 = new char[8];
             bytebuffer = new char[8 * data.Length];
             char outputByte = 'x';
