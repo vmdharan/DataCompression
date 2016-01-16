@@ -137,7 +137,8 @@
             this.cbAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbAlgorithm.FormattingEnabled = true;
             this.cbAlgorithm.Items.AddRange(new object[] {
-            "Huffman"});
+            "Huffman",
+            "Delta Encoding"});
             this.cbAlgorithm.Location = new System.Drawing.Point(15, 131);
             this.cbAlgorithm.Name = "cbAlgorithm";
             this.cbAlgorithm.Size = new System.Drawing.Size(144, 21);
@@ -156,6 +157,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(437, 196);
             this.Controls.Add(this.labelAlgorithm);
             this.Controls.Add(this.cbAlgorithm);

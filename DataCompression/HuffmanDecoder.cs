@@ -94,7 +94,7 @@ namespace DataCompression
                 finalBytes[x] = (byte)outputByte;
             }
 
-            File.WriteAllBytes(fileName + ".dec", finalBytes);
+            File.WriteAllBytes(fileName + ".dec1", finalBytes);
         }
     }
 }

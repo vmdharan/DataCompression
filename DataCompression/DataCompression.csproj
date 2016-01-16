@@ -71,6 +71,7 @@
     <Compile Include="DataCompression.Designer.cs">
       <DependentUpon>DataCompression.cs</DependentUpon>
     </Compile>
+    <Compile Include="DeltaEncoding.cs" />
     <Compile Include="Huffman.cs" />
     <Compile Include="HuffmanDecoder.cs" />
     <Compile Include="HuffmanEncoder.cs" />

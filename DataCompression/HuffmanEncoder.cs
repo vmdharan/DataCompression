@@ -129,7 +129,7 @@ namespace DataCompression
                 finalBytes[w] = (byte)bitVal;
             }
 
-            File.WriteAllBytes(fileName + ".enc", finalBytes);
+            File.WriteAllBytes(fileName + ".enc1", finalBytes);
 
             sw.Stop();
             File.WriteAllText("encodingTime.log", sw.ElapsedMilliseconds.ToString());

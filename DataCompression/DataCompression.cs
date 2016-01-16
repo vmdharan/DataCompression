@@ -50,18 +50,34 @@ namespace DataCompression
 
         private void runBtn_Click(object sender, EventArgs e)
         {
-            HuffmanEncoder encoder;
-            HuffmanDecoder decoder;
-
+            // Encode
             if (rbEncode.Checked == true)
             {
-                // Encode
-                encoder = new HuffmanEncoder(inputData, inputTB.Text);
+                if (cbAlgorithm.SelectedItem.ToString() == "Huffman")
+                {
+                    HuffmanEncoder encoder;
+                    encoder = new HuffmanEncoder(inputData, inputTB.Text);
+                }
+                else if (cbAlgorithm.SelectedItem.ToString() == "Delta Encoding")
+                {
+                    DeltaEncoding delta;
+                    delta = new DeltaEncoding(inputData, inputTB.Text, true);
+                }
             }
-            else if (rbDecode.Checked == true)
+
+            // Decode
+            if (rbDecode.Checked == true)
             {
-                // Decode
-                decoder = new HuffmanDecoder(inputData, inputTB.Text);
+                if(cbAlgorithm.SelectedItem.ToString() == "Huffman")
+                {
+                    HuffmanDecoder decoder;
+                    decoder = new HuffmanDecoder(inputData, inputTB.Text);
+                }
+                else if (cbAlgorithm.SelectedItem.ToString() == "Delta Encoding")
+                {
+                    DeltaEncoding delta;
+                    delta = new DeltaEncoding(inputData, inputTB.Text, false);
+                }
             }
         }
     }
