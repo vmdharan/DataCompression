@@ -63,6 +63,11 @@ namespace DataCompression
                     DeltaEncoding delta;
                     delta = new DeltaEncoding(inputData, inputTB.Text, true);
                 }
+                else if (cbAlgorithm.SelectedItem.ToString() == "Run Length Encoding")
+                {
+                    RunLengthEncoding rle;
+                    rle = new RunLengthEncoding(inputData, inputTB.Text, true);
+                }
             }
 
             // Decode
@@ -77,6 +82,11 @@ namespace DataCompression
                 {
                     DeltaEncoding delta;
                     delta = new DeltaEncoding(inputData, inputTB.Text, false);
+                }
+                else if (cbAlgorithm.SelectedItem.ToString() == "Run Length Encoding")
+                {
+                    RunLengthEncoding rle;
+                    rle = new RunLengthEncoding(inputData, inputTB.Text, false);
                 }
             }
         }

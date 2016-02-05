@@ -138,7 +138,8 @@
             this.cbAlgorithm.FormattingEnabled = true;
             this.cbAlgorithm.Items.AddRange(new object[] {
             "Huffman",
-            "Delta Encoding"});
+            "Delta Encoding",
+            "Run Length Encoding"});
             this.cbAlgorithm.Location = new System.Drawing.Point(15, 131);
             this.cbAlgorithm.Name = "cbAlgorithm";
             this.cbAlgorithm.Size = new System.Drawing.Size(144, 21);
