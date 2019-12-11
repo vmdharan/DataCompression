@@ -645,7 +645,7 @@ namespace DataCompression
             return bufferVal;
         }
 
-        // Convert a bit-stringto a byte representation
+        // Convert a bit-string to a byte representation
         public byte convertToByte(char[] bytebuffer)
         {
             int i;
